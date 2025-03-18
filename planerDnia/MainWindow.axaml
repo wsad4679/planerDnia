@@ -5,5 +5,47 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="planerDnia.MainWindow"
         Title="planerDnia">
-    Welcome to Avalonia!
+    
+    
+    
+    <StackPanel Margin="20" HorizontalAlignment="Center">
+        <Grid>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="nazwa zadania: " VerticalAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Width="150" x:Name="TaskName"/>
+            
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Kategoria: " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" SelectedIndex="0" Margin="10" VerticalAlignment="Center" x:Name="CategoryComboBox">
+                <ComboBoxItem Content="Nic"/>
+                <ComboBoxItem Content="Praca"/>
+                <ComboBoxItem Content="Rozrywka"/>
+                <ComboBoxItem Content="Trening"/>
+                <ComboBoxItem Content="Spotkanie"/>
+            </ComboBox>
+            
+        </Grid>
+        
+        <Button x:Name="SendTask" Click="CreateTaskButtonClick" Content="Dodaj zadanie" HorizontalAlignment="Center"/>
+        
+        <TextBlock x:Name="test"/>
+        
+    </StackPanel>
+    
+    
+    
+    
+    
+    
+    
+    
 </Window>
