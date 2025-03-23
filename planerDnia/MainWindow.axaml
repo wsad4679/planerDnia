@@ -8,8 +8,9 @@
     
     
     
-    <StackPanel Margin="20" HorizontalAlignment="Center">
-        <Grid>
+    <StackPanel Orientation="Vertical" Margin="10">
+        
+        <Grid HorizontalAlignment="Center">
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -36,16 +37,13 @@
         </Grid>
         
         <Button x:Name="SendTask" Click="CreateTaskButtonClick" Content="Dodaj zadanie" HorizontalAlignment="Center"/>
-        
-        <TextBlock x:Name="test"/>
-        
+
+            <WrapPanel x:Name="TaskWrapPanel"  Margin="20" HorizontalAlignment="Center"/>   
+
+            
+            <TextBlock x:Name="summaryTextBlock" />
+            
     </StackPanel>
-    
-    
-    
-    
-    
-    
     
     
 </Window>

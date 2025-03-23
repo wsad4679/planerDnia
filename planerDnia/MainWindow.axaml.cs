@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -15,9 +17,18 @@ public partial class MainWindow : Window
         InitializeComponent();
         
     }
-
-    public List<Task> taskList = new();
     
+    public void CountTasks()
+    {
+        int taskCount = TaskWrapPanel.Children.Count;
+        int finishedTasks = TaskWrapPanel.Children.OfType<StackPanel>().Count(panel =>
+        {
+            var checkBox = panel.Children.OfType<CheckBox>().FirstOrDefault();
+            return checkBox?.IsChecked == true;
+        });
+        summaryTextBlock.Text = $"Liczba zadań: {taskCount}\n Ukończone zadania: {finishedTasks} ";
+    }
+
     void CreateTaskButtonClick(object? sender, RoutedEventArgs e)
     {
         var name = TaskName.Text;
@@ -29,10 +40,11 @@ public partial class MainWindow : Window
             categoryList.Add(item.ToString());
         }
         
-        var task = new Task(name, category, TaskWrapPanel, categoryList);
+        var task = new Task(name, category, TaskWrapPanel, categoryList, CountTasks);
         
         TaskWrapPanel.Children.Add(task.stackPanel);
         
+        CountTasks();
     }
 
 }
@@ -48,9 +60,10 @@ public class Task
     public CheckBox czyUkonczoneCheckBox;
     public List<string> categoryList;
     public ComboBox categoryComboBox;
- 
+    public Action countTask;
 
-    public Task(string inputName, string inputCategory, WrapPanel parentPanel, List<string> inputCategoryList)
+    public Task(string inputName, string inputCategory, WrapPanel parentPanel, List<string> inputCategoryList,
+         Action countTask)
     {
         name = inputName;
         category = inputCategory;
@@ -85,13 +98,21 @@ public class Task
             HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
             Margin = new Thickness(10)
         };
+        
+        czyUkonczoneCheckBox.Checked += (sender, e) => countTask();
+        czyUkonczoneCheckBox.Unchecked += (sender, e) => countTask();
 
         removeButton = new Button
         {
             Content = "Usuń",
             HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
         };
-        removeButton.Click += (_, _) => parentPanel.Children.Remove(stackPanel);
+        removeButton.Click += (_, _) =>
+        {
+            parentPanel.Children.Remove(stackPanel);
+            countTask();
+        };
+        
         
         stackPanel.Children.Add(categoryComboBox);
         stackPanel.Children.Add(textBlock);
